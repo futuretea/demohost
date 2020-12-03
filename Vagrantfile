@@ -32,8 +32,9 @@ Vagrant.configure("2") do |config|
       end
       node.vm.provision :shell, :path => 'provision.sh'
       node.vm.provision :shell, inline: <<-SHELL
+      export INSTALL_K3S_EXEC="server --disable=traefik"
       cd /vagrant/scripts
-      ./install.sh first-server
+      ./onekey.sh
 SHELL
     end
   end
@@ -60,8 +61,9 @@ Vagrant.configure("2") do |config|
       end
       node.vm.provision :shell, :path => 'provision.sh'
       node.vm.provision :shell, inline: <<-SHELL
+      export INSTALL_K3S_EXEC="agent"
       cd /vagrant/scripts
-      ./install.sh agent
+      ./onekey.sh
 SHELL
     end
   end

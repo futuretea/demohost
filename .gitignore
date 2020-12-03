@@ -1,2 +1,5 @@
 .vagrant
-k3s
+bin
+tar
+images
+configs
