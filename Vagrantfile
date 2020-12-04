@@ -32,9 +32,11 @@ Vagrant.configure("2") do |config|
       end
       node.vm.provision :shell, :path => 'provision.sh'
       node.vm.provision :shell, inline: <<-SHELL
+      export K3S_TOKEN="token"
       export INSTALL_K3S_EXEC="server --disable=traefik"
       cd /vagrant/scripts
       ./onekey.sh
+      ./get_kube_config.sh
 SHELL
     end
   end
@@ -61,6 +63,8 @@ Vagrant.configure("2") do |config|
       end
       node.vm.provision :shell, :path => 'provision.sh'
       node.vm.provision :shell, inline: <<-SHELL
+      export K3S_TOKEN="token"
+      export K3S_URL="https://10.5.2.11:6443"
       export INSTALL_K3S_EXEC="agent"
       cd /vagrant/scripts
       ./onekey.sh
