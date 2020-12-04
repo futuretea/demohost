@@ -5,5 +5,3 @@ PermitRootLogin yes
 UseDNS no
 EOF
 systemctl restart sshd
-yum install nfs-utils -y
-systemctl enable --now nfs-server.service
