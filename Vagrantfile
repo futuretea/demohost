@@ -34,14 +34,14 @@ Vagrant.configure("2") do |config|
       node.vm.provision :shell, :path => 'scripts/install_nfs.sh'
       node.vm.provision :shell, inline: <<-SHELL
       export K3S_TOKEN="token"
-      export INSTALL_K3S_EXEC="server --disable=traefik"
+      export INSTALL_K3S_EXEC="server --cluster-init --disable=traefik"
       cd /vagrant/scripts
       ./reinstall_k3s.sh
-      ./get_kube_config.sh
 SHELL
     end
   end
 end
+
 Vagrant.configure("2") do |config|
   (12..20).each do |i|
     config.vm.define "demohost#{i}" do |node|
@@ -71,29 +71,6 @@ Vagrant.configure("2") do |config|
       cd /vagrant/scripts
       ./reinstall_k3s.sh
 SHELL
-    end
-  end
-end
-Vagrant.configure("2") do |config|
-  (188..188).each do |i|
-    config.vm.define "demohost#{i}" do |node|
-      # node.ssh.username = 'root'
-      # node.ssh.password = 'vagrant'
-      node.ssh.insert_key = true
-      node.vm.box = 'centos-7-1905.1-libvirt'
-      node.vm.hostname = "demohost#{i}"
-      node.vm.synced_folder '.', '/vagrant', create: true, type: "nfs", nfs_udp: false, nfs_version: 4
-      node.vm.provider :libvirt do |domain|
-        domain.driver = 'kvm'
-        domain.memory = 4096
-        domain.cpus = 4
-        domain.nested = true
-        domain.management_network_name = "demohost"
-        domain.management_network_address = "10.5.2.0/24"
-        domain.management_network_mac = ip2mac("50:50","10.5.2.#{i}")
-        domain.storage :file, :size => '20G', :bus => 'virtio'
-        domain.storage :file, :size => '10G', :bus => 'virtio'
-      end
     end
   end
 end
