@@ -43,7 +43,7 @@ SHELL
 end
 
 Vagrant.configure("2") do |config|
-  (12..20).each do |i|
+  (12..13).each do |i|
     config.vm.define "demohost#{i}" do |node|
       # node.ssh.username = 'root'
       # node.ssh.password = 'vagrant'
